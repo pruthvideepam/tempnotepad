@@ -1,11 +1,11 @@
 import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
-import { PadAuditAction, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 type LogPadEventInput = {
   padId?: string | null;
   slug: string;
-  action: PadAuditAction;
+  action: Prisma.PadAuditLogCreateInput["action"];
   content?: string | null;
   contentSnapshot?: string | null;
   ipAddress?: string | null;
