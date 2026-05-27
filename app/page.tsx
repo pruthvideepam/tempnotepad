@@ -259,7 +259,7 @@ export default function Home() {
     flex-direction: column;
     align-items: stretch;
     max-width: 100%;
-    border-radius: 14px;
+    border-radius: 16px;
     min-height: 0;
   }
 
@@ -267,22 +267,23 @@ export default function Home() {
     border-right: none;
     border-bottom: 1px solid #e2e8f0;
     justify-content: flex-start;
-    padding: 16px 16px;
-    min-height: 56px;
-    font-size: 17px;
+    padding: 18px 18px;
+    min-height: 64px;
+    font-size: 18px;
   }
 
   .input {
-    height: 58px;
+    height: 64px;
     width: 100%;
-    padding: 0 16px;
-    font-size: 18px;
+    padding: 0 18px;
+    font-size: 20px;
   }
 
   .submitBtn {
     width: 100%;
     min-width: 0;
-    height: 56px;
+    height: 60px;
+    font-size: 18px;
   }
 
   .footerLinks {
