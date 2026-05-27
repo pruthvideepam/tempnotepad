@@ -227,68 +227,72 @@ export default function Home() {
         }
 
         @media (max-width: 640px) {
-          .headerInner {
-            justify-content: center;
-          }
+  .headerInner {
+    justify-content: center;
+  }
 
-          .nav {
-            width: 100%;
-            justify-content: center;
-          }
+  .nav {
+    width: 100%;
+    justify-content: center;
+  }
 
-          .heroWrap {
-            padding: 20px 12px 28px;
-            align-items: flex-start;
-          }
+  .heroWrap {
+    padding: 20px 12px 28px;
+    align-items: flex-start;
+  }
 
-          .heroCard {
-            padding: 32px 16px 24px;
-            border-radius: 18px;
-          }
+  .heroCard {
+    padding: 32px 16px 24px;
+    border-radius: 18px;
+  }
 
-          .subtitle {
-            margin-bottom: 22px;
-          }
+  .subtitle {
+    margin-bottom: 22px;
+  }
 
-          .form {
-            flex-direction: column;
-            align-items: stretch;
-          }
+  .form {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-          .inputGroup {
-            flex-direction: column;
-            align-items: stretch;
-            max-width: 100%;
-            border-radius: 12px;
-          }
+  .inputGroup {
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 100%;
+    border-radius: 14px;
+    min-height: 0;
+  }
 
-          .prefix {
-            border-right: none;
-            border-bottom: 1px solid #e2e8f0;
-            justify-content: flex-start;
-            padding: 12px 14px;
-            min-height: 44px;
-          }
+  .prefix {
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+    justify-content: flex-start;
+    padding: 16px 16px;
+    min-height: 56px;
+    font-size: 17px;
+  }
 
-          .input {
-            height: 48px;
-            width: 100%;
-          }
+  .input {
+    height: 58px;
+    width: 100%;
+    padding: 0 16px;
+    font-size: 18px;
+  }
 
-          .submitBtn {
-            width: 100%;
-            min-width: 0;
-            height: 50px;
-          }
+  .submitBtn {
+    width: 100%;
+    min-width: 0;
+    height: 56px;
+  }
 
-          .footerLinks {
-            gap: 8px;
-          }
+  .footerLinks {
+    gap: 8px;
+  }
 
-          .divider {
-            display: none;
-          }
-        }
+  .divider {
+    display: none;
+  }
+}
       `}</style>
 
       <main className="page">
