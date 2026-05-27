@@ -267,7 +267,8 @@ export default function Home() {
     border-right: none;
     border-bottom: 1px solid #e2e8f0;
     justify-content: flex-start;
-    padding: 18px 18px;
+    padding: 0 18px;
+    height: 64px;
     min-height: 64px;
     font-size: 18px;
   }
