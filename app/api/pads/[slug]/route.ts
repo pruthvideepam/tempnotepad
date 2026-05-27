@@ -275,7 +275,7 @@ if (existingPad && trimmedContent.length === 0) {
       );
     }
 
-    const wasDeleted = existingPad?.deletedAt !== null;
+    const wasDeleted = existingPad?.deletedAt != null;
 
     const pad = await prisma.pad.upsert({
       where: { slug },
