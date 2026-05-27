@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider = "postgresql"
 }
 
 enum PadAuditAction {
@@ -17,14 +17,14 @@ enum PadAuditAction {
 }
 
 model Pad {
-  id           String   @id @default(uuid())
-  slug         String   @unique
-  content      String   @default("")
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  deletedAt    DateTime?
-  lastViewedAt DateTime?
-  legalHold    Boolean  @default(false)
+  id           String    @id @default(uuid())
+  slug         String    @unique
+  content      String    @default("")
+  createdAt    DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime  @updatedAt @db.Timestamptz(3)
+  deletedAt    DateTime? @db.Timestamptz(3)
+  lastViewedAt DateTime? @db.Timestamptz(3)
+  legalHold    Boolean   @default(false)
 
   auditLogs    PadAuditLog[]
 
@@ -45,7 +45,7 @@ model PadAuditLog {
   userAgent       String?
   requestId       String?
   metadata        Json?
-  createdAt       DateTime       @default(now())
+  createdAt       DateTime       @default(now()) @db.Timestamptz(3)
 
   pad             Pad?           @relation(fields: [padId], references: [id], onDelete: SetNull)
 
