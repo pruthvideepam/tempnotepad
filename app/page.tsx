@@ -29,21 +29,19 @@ export default function Home() {
     <>
       <style jsx>{`
         .page {
-          min-height: 100vh;
-          background: #f3f3f3;
-          display: flex;
-          flex-direction: column;
-          font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-          color: #111;
-        }
+  background: #f3f3f3;
+  display: block;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  color: #111;
+}
 
         .main {
-          width: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: flex-start;
-          padding: 140px 16px 20px;
-        }
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 140px 16px 20px;
+}
 
         .centerBox {
           width: 100%;
@@ -178,7 +176,7 @@ export default function Home() {
 
         @media (max-width: 640px) {
           .main {
-            padding: 110px 14px 10px;
+            padding: 80px 14px 10px;
           }
 
           .centerBox {
@@ -248,7 +246,7 @@ export default function Home() {
 
         @media (max-width: 430px) {
           .main {
-            padding: 96px 12px 8px;
+            padding: 60px 12px 8px;
           }
 
           .title {
