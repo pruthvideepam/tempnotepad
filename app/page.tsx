@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { generateRandomSlug, slugify } from "@/lib/slug";
 
@@ -25,309 +25,269 @@ export default function Home() {
     openPad(generateRandomSlug());
   }
 
-  const navLinkStyle = useMemo(
-    () =>
-      ({
-        textDecoration: "none",
-        color: "#475569",
-        fontSize: "14px",
-        fontWeight: 600,
-        padding: "10px 14px",
-        borderRadius: "999px",
-        background: "#ffffff",
-        border: "1px solid #e2e8f0",
-        whiteSpace: "nowrap",
-      }) as const,
-    []
-  );
-
   return (
     <>
       <style jsx>{`
         .page {
           min-height: 100vh;
-          background: linear-gradient(180deg, #f8fafc 0%, #f3f4f6 50%, #eef2f7 100%);
+          background: #f3f3f3;
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
           font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+          color: #111;
         }
 
-        .header {
-          width: 100%;
-          border-bottom: 1px solid #e5e7eb;
-          background: rgba(255, 255, 255, 0.88);
-          backdrop-filter: blur(10px);
-        }
-
-        .headerInner {
-          max-width: 1100px;
-          margin: 0 auto;
-          padding: 14px 16px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 12px;
-          flex-wrap: wrap;
-        }
-
-        .brand {
-          text-decoration: none;
-          color: #111827;
-          font-size: 20px;
-          font-weight: 800;
-          letter-spacing: -0.03em;
-          white-space: nowrap;
-        }
-
-        .nav {
-          display: flex;
-          gap: 10px;
-          flex-wrap: wrap;
-          align-items: center;
-          justify-content: flex-end;
-        }
-
-        .heroWrap {
-          width: 100%;
-          display: flex;
-          justify-content: center;
-          padding: 28px 16px 36px;
+        .main {
           flex: 1;
+          display: flex;
           align-items: center;
+          justify-content: center;
+          padding: 40px 16px 80px;
         }
 
-        .heroCard {
+        .centerBox {
           width: 100%;
-          max-width: 860px;
+          max-width: 760px;
           text-align: center;
-          background: rgba(255, 255, 255, 0.9);
-          border: 1px solid #e5e7eb;
-          border-radius: 24px;
-          padding: 48px 24px;
-          box-shadow: 0 20px 60px rgba(15, 23, 42, 0.06);
         }
 
         .title {
-          font-size: clamp(36px, 9vw, 64px);
-          font-weight: 800;
-          letter-spacing: -0.06em;
           margin: 0;
-          color: #0f172a;
-          line-height: 0.98;
+          font-size: clamp(52px, 10vw, 88px);
+          line-height: 0.95;
+          font-weight: 700;
+          letter-spacing: -0.05em;
+          color: #000;
         }
 
         .subtitle {
-          margin-top: 14px;
-          margin-bottom: 28px;
-          font-size: clamp(16px, 3.5vw, 20px);
-          color: #475569;
+          margin: 18px 0 34px;
+          font-size: clamp(18px, 3vw, 26px);
+          color: #4b4b4b;
+          line-height: 1.35;
         }
 
         .form {
           display: flex;
           justify-content: center;
           align-items: stretch;
-          gap: 10px;
-          flex-wrap: wrap;
+          gap: 12px;
+          flex-wrap: nowrap;
         }
 
         .inputGroup {
-          display: flex;
-          align-items: center;
-          border: 1px solid #cbd5e1;
-          border-radius: 12px;
-          background: #fff;
-          overflow: hidden;
-          width: 100%;
+          flex: 1;
           max-width: 560px;
-          min-height: 52px;
-          box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+          display: flex;
+          align-items: stretch;
+          border: 1px solid #9ca3af;
+          border-radius: 8px;
+          overflow: hidden;
+          background: #fff;
+          min-width: 0;
         }
 
         .prefix {
-          padding: 0 14px;
-          font-size: 15px;
-          color: #475569;
-          border-right: 1px solid #e2e8f0;
-          background: #f8fafc;
-          white-space: nowrap;
-          height: 100%;
           display: flex;
           align-items: center;
+          padding: 0 18px;
+          background: #f7f7f7;
+          border-right: 1px solid #c7c7c7;
+          color: #4b5563;
+          font-size: 18px;
+          white-space: nowrap;
+          height: 56px;
           flex-shrink: 0;
         }
 
         .input {
           flex: 1;
+          min-width: 0;
           border: none;
           outline: none;
-          padding: 0 14px;
-          font-size: 16px;
+          height: 56px;
+          padding: 0 18px;
+          font-size: 18px;
           color: #111827;
-          height: 50px;
-          min-width: 0;
           background: #fff;
         }
 
+        .input::placeholder {
+          color: #8a8a8a;
+          font-style: italic;
+        }
+
         .submitBtn {
-          height: 52px;
-          padding: 0 22px;
-          border: 1px solid #111827;
-          border-radius: 12px;
-          background: #111827;
-          color: #ffffff;
-          font-size: 16px;
-          font-weight: 700;
+          border: 1px solid #a3a3a3;
+          border-radius: 8px;
+          background: #f8f8f8;
+          color: #333;
+          font-size: 18px;
+          height: 56px;
+          padding: 0 24px;
+          min-width: 96px;
           cursor: pointer;
-          min-width: 140px;
         }
 
         .helper {
-          margin-top: 16px;
-          margin-bottom: 8px;
-          font-size: 15px;
-          color: #64748b;
+          margin: 22px 0 0;
+          font-size: 18px;
+          color: #4b4b4b;
         }
 
         .randomBtn {
+          margin-top: 14px;
           border: none;
           background: transparent;
-          color: #4338ca;
-          font-size: 14px;
-          font-weight: 600;
+          color: #4b4b4b;
+          font-size: 16px;
           cursor: pointer;
           text-decoration: underline;
         }
 
         .footer {
+          padding: 24px 16px 16px;
           text-align: center;
-          padding: 20px 16px 18px;
-          color: #667085;
-          font-size: 14px;
-          border-top: 1px solid #e5e7eb;
-          background: rgba(255, 255, 255, 0.82);
+          color: #444;
         }
 
         .footerLinks {
           display: flex;
           justify-content: center;
-          gap: 12px;
           flex-wrap: wrap;
-          margin-bottom: 10px;
+          gap: 10px;
+          font-size: 14px;
+          line-height: 1.35;
         }
 
         .footerLink {
-          color: #555;
+          color: #444;
           text-decoration: none;
         }
 
         .divider {
-          color: #98a2b3;
+          color: #666;
+        }
+
+        .copyright {
+          margin-top: 10px;
+          font-size: 14px;
+          color: #444;
         }
 
         @media (max-width: 640px) {
-  .headerInner {
-    justify-content: center;
-  }
+          .main {
+            align-items: flex-start;
+            padding: 140px 16px 60px;
+          }
 
-  .nav {
-    width: 100%;
-    justify-content: center;
-  }
+          .centerBox {
+            max-width: 100%;
+          }
 
-  .heroWrap {
-    padding: 20px 12px 28px;
-    align-items: flex-start;
-  }
+          .title {
+            font-size: 58px;
+          }
 
-  .heroCard {
-    padding: 32px 16px 24px;
-    border-radius: 18px;
-  }
+          .subtitle {
+            margin: 14px 0 28px;
+            font-size: 18px;
+          }
 
-  .subtitle {
-    margin-bottom: 22px;
-  }
+          .form {
+            gap: 10px;
+          }
 
-  .form {
-    flex-direction: column;
-    align-items: stretch;
-  }
+          .inputGroup {
+            max-width: none;
+          }
 
-  .inputGroup {
-    flex-direction: column;
-    align-items: stretch;
-    max-width: 100%;
-    border-radius: 16px;
-    min-height: 0;
-  }
+          .prefix {
+            padding: 0 16px;
+            font-size: 16px;
+            height: 54px;
+          }
 
-  .prefix {
-    border-right: none;
-    border-bottom: 1px solid #e2e8f0;
-    justify-content: flex-start;
-    padding: 0 18px;
-    height: 64px;
-    min-height: 64px;
-    font-size: 18px;
-  }
+          .input {
+            height: 54px;
+            padding: 0 16px;
+            font-size: 16px;
+          }
 
-  .input {
-    height: 64px;
-    width: 100%;
-    padding: 0 18px;
-    font-size: 20px;
-  }
+          .submitBtn {
+            height: 54px;
+            min-width: 88px;
+            padding: 0 18px;
+            font-size: 16px;
+          }
 
-  .submitBtn {
-    width: 100%;
-    min-width: 0;
-    height: 60px;
-    font-size: 18px;
-  }
+          .helper {
+            margin-top: 18px;
+            font-size: 17px;
+          }
 
-  .footerLinks {
-    gap: 8px;
-  }
+          .randomBtn {
+            font-size: 15px;
+          }
 
-  .divider {
-    display: none;
-  }
-}
+          .footerLinks {
+            gap: 8px;
+            font-size: 13px;
+          }
+
+          .divider {
+            display: inline;
+          }
+        }
+
+        @media (max-width: 430px) {
+          .main {
+            padding: 150px 12px 56px;
+          }
+
+          .title {
+            font-size: 50px;
+          }
+
+          .subtitle {
+            font-size: 17px;
+          }
+
+          .form {
+            gap: 10px;
+          }
+
+          .prefix {
+            padding: 0 12px;
+            font-size: 15px;
+            height: 52px;
+          }
+
+          .input {
+            height: 52px;
+            padding: 0 12px;
+            font-size: 15px;
+          }
+
+          .submitBtn {
+            height: 52px;
+            min-width: 78px;
+            padding: 0 14px;
+            font-size: 15px;
+          }
+
+          .helper {
+            font-size: 16px;
+          }
+        }
       `}</style>
 
       <main className="page">
-        <header className="header">
-          <div className="headerInner">
-            <Link href="/" className="brand">
-              TempNotepad
-            </Link>
-
-            <nav className="nav">
-              <Link href="/about" style={navLinkStyle}>
-                About
-              </Link>
-              <Link href="/founder" style={navLinkStyle}>
-                Founder
-              </Link>
-              <Link href="/privacy" style={navLinkStyle}>
-                Privacy
-              </Link>
-              <Link href="/terms" style={navLinkStyle}>
-                Terms
-              </Link>
-            </nav>
-          </div>
-        </header>
-
-        <section className="heroWrap">
-          <div className="heroCard">
+        <section className="main">
+          <div className="centerBox">
             <h1 className="title">TEMPNOTEPAD</h1>
 
-            <p className="subtitle">
-              The simplest way to share temporary text online
-            </p>
+            <p className="subtitle">The simplest way to share text online</p>
 
             <form onSubmit={handleSubmit} className="form">
               <div className="inputGroup">
@@ -337,51 +297,53 @@ export default function Home() {
                   type="text"
                   value={padName}
                   onChange={(e) => setPadName(e.target.value)}
-                  placeholder="your-pad-name"
+                  placeholder="your-secret-page"
                   autoFocus
                   className="input"
                 />
               </div>
 
               <button type="submit" className="submitBtn">
-                Open Pad
+                Go!
               </button>
             </form>
 
-            <p className="helper">
-              No login required. Open a named pad or jump into a random one.
-            </p>
+            <p className="helper">No login required</p>
 
             <button
               type="button"
               onClick={handleRandomPad}
               className="randomBtn"
             >
-              Or use a random pad
+              Use a random pad
             </button>
           </div>
         </section>
 
         <footer className="footer">
           <div className="footerLinks">
-            <Link href="/about" className="footerLink">
-              About
-            </Link>
-            <span className="divider">|</span>
-            <Link href="/founder" className="footerLink">
-              Founder
-            </Link>
-            <span className="divider">|</span>
             <Link href="/privacy" className="footerLink">
               Privacy Policy
             </Link>
             <span className="divider">|</span>
-            <Link href="/terms" className="footerLink">
-              Terms
+            <Link href="/cookie-policy" className="footerLink">
+              Cookie Policy
+            </Link>
+            <span className="divider">|</span>
+            <Link href="/content-policy" className="footerLink">
+              Content Policy
+            </Link>
+            <span className="divider">|</span>
+            <Link href="/refund-policy" className="footerLink">
+              Refund Policy
+            </Link>
+            <span className="divider">|</span>
+            <Link href="/subscription" className="footerLink">
+              Your Subscription
             </Link>
           </div>
 
-          <div>© 2026 TempNotepad</div>
+          <div className="copyright">© 2026 TempNotepad</div>
         </footer>
       </main>
     </>
