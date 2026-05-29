@@ -42,7 +42,7 @@ export default function Home() {
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 40px 16px 80px;
+          padding: 32px 16px 36px;
         }
 
         .centerBox {
@@ -146,7 +146,7 @@ export default function Home() {
         }
 
         .footer {
-          padding: 24px 16px 16px;
+          padding: 18px 16px 14px;
           text-align: center;
           color: #444;
         }
@@ -177,8 +177,9 @@ export default function Home() {
 
         @media (max-width: 640px) {
           .main {
+            justify-content: flex-start;
             align-items: flex-start;
-            padding: 140px 16px 60px;
+            padding: 130px 14px 20px;
           }
 
           .centerBox {
@@ -186,11 +187,11 @@ export default function Home() {
           }
 
           .title {
-            font-size: 58px;
+            font-size: 54px;
           }
 
           .subtitle {
-            margin: 14px 0 28px;
+            margin: 14px 0 24px;
             font-size: 18px;
           }
 
@@ -203,81 +204,90 @@ export default function Home() {
           }
 
           .prefix {
-            padding: 0 16px;
-            font-size: 16px;
-            height: 54px;
-          }
-
-          .input {
-            height: 54px;
-            padding: 0 16px;
-            font-size: 16px;
-          }
-
-          .submitBtn {
-            height: 54px;
-            min-width: 88px;
-            padding: 0 18px;
-            font-size: 16px;
-          }
-
-          .helper {
-            margin-top: 18px;
-            font-size: 17px;
-          }
-
-          .randomBtn {
-            font-size: 15px;
-          }
-
-          .footerLinks {
-            gap: 8px;
-            font-size: 13px;
-          }
-
-          .divider {
-            display: inline;
-          }
-        }
-
-        @media (max-width: 430px) {
-          .main {
-            padding: 150px 12px 56px;
-          }
-
-          .title {
-            font-size: 50px;
-          }
-
-          .subtitle {
-            font-size: 17px;
-          }
-
-          .form {
-            gap: 10px;
-          }
-
-          .prefix {
-            padding: 0 12px;
+            padding: 0 14px;
             font-size: 15px;
             height: 52px;
           }
 
           .input {
             height: 52px;
-            padding: 0 12px;
+            padding: 0 14px;
             font-size: 15px;
           }
 
           .submitBtn {
             height: 52px;
             min-width: 78px;
-            padding: 0 14px;
+            padding: 0 16px;
             font-size: 15px;
           }
 
           .helper {
+            margin-top: 18px;
             font-size: 16px;
+          }
+
+          .randomBtn {
+            font-size: 15px;
+          }
+
+          .footer {
+            padding: 8px 12px 12px;
+          }
+
+          .footerLinks {
+            gap: 6px;
+            font-size: 13px;
+          }
+
+          .copyright {
+            margin-top: 8px;
+            font-size: 13px;
+          }
+        }
+
+        @media (max-width: 430px) {
+          .main {
+            padding: 120px 12px 14px;
+          }
+
+          .title {
+            font-size: 48px;
+          }
+
+          .subtitle {
+            font-size: 17px;
+          }
+
+          .prefix {
+            padding: 0 12px;
+            font-size: 14px;
+            height: 50px;
+          }
+
+          .input {
+            height: 50px;
+            padding: 0 12px;
+            font-size: 14px;
+          }
+
+          .submitBtn {
+            height: 50px;
+            min-width: 72px;
+            padding: 0 14px;
+            font-size: 14px;
+          }
+
+          .helper {
+            font-size: 15px;
+          }
+
+          .footerLinks {
+            font-size: 12px;
+          }
+
+          .copyright {
+            font-size: 12px;
           }
         }
       `}</style>
@@ -322,24 +332,20 @@ export default function Home() {
 
         <footer className="footer">
           <div className="footerLinks">
+            <Link href="/about" className="footerLink">
+              About
+            </Link>
+            <span className="divider">|</span>
+            <Link href="/founder" className="footerLink">
+              Founder
+            </Link>
+            <span className="divider">|</span>
             <Link href="/privacy" className="footerLink">
               Privacy Policy
             </Link>
             <span className="divider">|</span>
-            <Link href="/cookie-policy" className="footerLink">
-              Cookie Policy
-            </Link>
-            <span className="divider">|</span>
-            <Link href="/content-policy" className="footerLink">
-              Content Policy
-            </Link>
-            <span className="divider">|</span>
-            <Link href="/refund-policy" className="footerLink">
-              Refund Policy
-            </Link>
-            <span className="divider">|</span>
-            <Link href="/subscription" className="footerLink">
-              Your Subscription
+            <Link href="/terms" className="footerLink">
+              Terms
             </Link>
           </div>
 
