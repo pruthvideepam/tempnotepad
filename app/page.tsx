@@ -38,11 +38,11 @@ export default function Home() {
         }
 
         .main {
-          flex: 1;
+          width: 100%;
           display: flex;
-          align-items: center;
           justify-content: center;
-          padding: 32px 16px 36px;
+          align-items: flex-start;
+          padding: 140px 16px 20px;
         }
 
         .centerBox {
@@ -61,7 +61,7 @@ export default function Home() {
         }
 
         .subtitle {
-          margin: 18px 0 34px;
+          margin: 18px 0 30px;
           font-size: clamp(18px, 3vw, 26px);
           color: #4b4b4b;
           line-height: 1.35;
@@ -78,13 +78,13 @@ export default function Home() {
         .inputGroup {
           flex: 1;
           max-width: 560px;
+          min-width: 0;
           display: flex;
           align-items: stretch;
-          border: 1px solid #9ca3af;
+          border: 1px solid #a8a8a8;
           border-radius: 8px;
           overflow: hidden;
           background: #fff;
-          min-width: 0;
         }
 
         .prefix {
@@ -92,7 +92,7 @@ export default function Home() {
           align-items: center;
           padding: 0 18px;
           background: #f7f7f7;
-          border-right: 1px solid #c7c7c7;
+          border-right: 1px solid #c8c8c8;
           color: #4b5563;
           font-size: 18px;
           white-space: nowrap;
@@ -118,7 +118,7 @@ export default function Home() {
         }
 
         .submitBtn {
-          border: 1px solid #a3a3a3;
+          border: 1px solid #a8a8a8;
           border-radius: 8px;
           background: #f8f8f8;
           color: #333;
@@ -146,7 +146,8 @@ export default function Home() {
         }
 
         .footer {
-          padding: 18px 16px 14px;
+          margin-top: auto;
+          padding: 10px 16px 14px;
           text-align: center;
           color: #444;
         }
@@ -155,7 +156,7 @@ export default function Home() {
           display: flex;
           justify-content: center;
           flex-wrap: wrap;
-          gap: 10px;
+          gap: 8px;
           font-size: 14px;
           line-height: 1.35;
         }
@@ -170,16 +171,14 @@ export default function Home() {
         }
 
         .copyright {
-          margin-top: 10px;
+          margin-top: 8px;
           font-size: 14px;
           color: #444;
         }
 
         @media (max-width: 640px) {
           .main {
-            justify-content: flex-start;
-            align-items: flex-start;
-            padding: 130px 14px 20px;
+            padding: 110px 14px 10px;
           }
 
           .centerBox {
@@ -191,7 +190,7 @@ export default function Home() {
           }
 
           .subtitle {
-            margin: 14px 0 24px;
+            margin: 14px 0 22px;
             font-size: 18px;
           }
 
@@ -205,34 +204,35 @@ export default function Home() {
 
           .prefix {
             padding: 0 14px;
-            font-size: 15px;
+            font-size: 16px;
             height: 52px;
           }
 
           .input {
             height: 52px;
             padding: 0 14px;
-            font-size: 15px;
+            font-size: 16px;
           }
 
           .submitBtn {
             height: 52px;
             min-width: 78px;
             padding: 0 16px;
-            font-size: 15px;
+            font-size: 16px;
           }
 
           .helper {
-            margin-top: 18px;
+            margin-top: 16px;
             font-size: 16px;
           }
 
           .randomBtn {
+            margin-top: 10px;
             font-size: 15px;
           }
 
           .footer {
-            padding: 8px 12px 12px;
+            padding: 8px 12px 10px;
           }
 
           .footerLinks {
@@ -241,14 +241,14 @@ export default function Home() {
           }
 
           .copyright {
-            margin-top: 8px;
+            margin-top: 6px;
             font-size: 13px;
           }
         }
 
         @media (max-width: 430px) {
           .main {
-            padding: 120px 12px 14px;
+            padding: 96px 12px 8px;
           }
 
           .title {
@@ -261,21 +261,21 @@ export default function Home() {
 
           .prefix {
             padding: 0 12px;
-            font-size: 14px;
+            font-size: 15px;
             height: 50px;
           }
 
           .input {
             height: 50px;
             padding: 0 12px;
-            font-size: 14px;
+            font-size: 16px;
           }
 
           .submitBtn {
             height: 50px;
             min-width: 72px;
             padding: 0 14px;
-            font-size: 14px;
+            font-size: 15px;
           }
 
           .helper {
