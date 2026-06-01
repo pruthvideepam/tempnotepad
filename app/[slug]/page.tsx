@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import PadEditor from "@/components/PadEditor";
 
@@ -6,6 +7,17 @@ type PageProps = {
     slug: string;
   }>;
 };
+
+const RESERVED_SLUGS = new Set([
+  "blog",
+  "privacy",
+  "terms",
+  "contact",
+  "faq",
+  "sitemap.xml",
+  "robots.txt",
+  "favicon.ico",
+]);
 
 async function getPadData(slug: string): Promise<{
   content: string;
@@ -35,6 +47,11 @@ async function getPadData(slug: string): Promise<{
 
 export default async function PadPage({ params }: PageProps) {
   const { slug } = await params;
+
+  if (RESERVED_SLUGS.has(slug)) {
+    notFound();
+  }
+
   const pad = await getPadData(slug);
 
   return (
