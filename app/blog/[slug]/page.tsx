@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -18,7 +19,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: BlogPageProps) {
+export async function generateMetadata({
+  params,
+}: BlogPageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = blogPosts.find((item) => item.slug === slug);
 
@@ -34,12 +37,12 @@ export async function generateMetadata({ params }: BlogPageProps) {
     description: post.description,
     keywords: post.keywords,
     alternates: {
-      canonical: `${siteUrl}/blog/${post.slug}`,
+      canonical: `/blog/${post.slug}`,
     },
     openGraph: {
       title: post.title,
       description: post.description,
-      url: `${siteUrl}/blog/${post.slug}`,
+      url: `/blog/${post.slug}`,
       siteName: "TempNotepad",
       type: "article",
       publishedTime: post.publishedAt,
@@ -74,20 +77,26 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
 
   const articleJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: post.title,
     description: post.description,
     image: [`${siteUrl}${post.image}`],
     datePublished: post.publishedAt,
     dateModified: post.updatedAt,
-    mainEntityOfPage: `${siteUrl}/blog/${post.slug}`,
+    inLanguage: "en",
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${siteUrl}/blog/${post.slug}`,
+    },
     author: {
       "@type": "Person",
       name: "Pruthvi Deepam L A",
+      url: `${siteUrl}/founder`,
     },
     publisher: {
       "@type": "Organization",
       name: "TempNotepad",
+      url: siteUrl,
       logo: {
         "@type": "ImageObject",
         url: `${siteUrl}/favicon.ico`,
@@ -120,6 +129,19 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
     ],
   };
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: post.faq.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+
   return (
     <main
       style={{
@@ -140,6 +162,12 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqJsonLd).replace(/</g, "\\u003c"),
         }}
       />
 
@@ -189,7 +217,7 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
             fontSize: "14px",
           }}
         >
-          ← Back to Blog
+          ← Back to blog
         </Link>
 
         <div
@@ -199,8 +227,8 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
             marginBottom: "12px",
           }}
         >
-          {post.category} · Published {post.publishedAt} · Updated {post.updatedAt} ·{" "}
-          {post.readingTime}
+          {post.category} · Published {post.publishedAt} · Updated{" "}
+          {post.updatedAt} · {post.readingTime}
         </div>
 
         <h1
@@ -425,10 +453,52 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
                   lineHeight: 1.7,
                 }}
               >
-                Read related article: {item.title}
+                Read more about {item.title}
               </Link>
             ))}
           </div>
+        </section>
+
+        <section
+          style={{
+            background: "#fff",
+            border: "1px solid #d4d4d4",
+            borderRadius: "14px",
+            padding: "22px",
+            marginTop: "20px",
+          }}
+        >
+          <h2
+            style={{
+              margin: "0 0 14px",
+              fontSize: "26px",
+            }}
+          >
+            Try TempNotepad
+          </h2>
+
+          <p
+            style={{
+              margin: "0 0 12px",
+              fontSize: "16px",
+              lineHeight: 1.8,
+              color: "#444",
+            }}
+          >
+            Want to create and share a temporary note right away? Open the
+            homepage and start writing instantly without signing up.
+          </p>
+
+          <Link
+            href="/"
+            style={{
+              color: "#222",
+              textDecoration: "underline",
+              fontSize: "16px",
+            }}
+          >
+            Open TempNotepad
+          </Link>
         </section>
 
         <SiteFooterNav />

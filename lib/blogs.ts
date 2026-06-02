@@ -27,8 +27,8 @@ export type BlogPost = {
 
 export const blogPosts: BlogPost[] = [
   {
-    slug: "how-to-share-temporary-notes-online",
-    title: "How to Share Temporary Notes Online Quickly",
+    slug: "share-temporary-notes-online",
+    title: "Share Temporary Notes Online Quickly",
     description:
       "Learn how to share temporary notes online quickly for study, work, code snippets, reminders, and simple text collaboration.",
     publishedAt: "2026-05-29",
@@ -175,8 +175,8 @@ export const blogPosts: BlogPost[] = [
     ],
   },
   {
-    slug: "best-uses-of-online-notepad-for-students",
-    title: "Best Uses of an Online Notepad for Students",
+    slug: "online-notepad-for-students",
+    title: "Online Notepad for Students: Best Uses",
     description:
       "Discover the best ways students can use an online notepad for class notes, quick revision, group work, and moving text between devices.",
     publishedAt: "2026-05-29",
@@ -249,8 +249,8 @@ export const blogPosts: BlogPost[] = [
     ],
   },
   {
-    slug: "how-to-share-code-snippets-online-fast",
-    title: "How to Share Code Snippets Online Fast",
+    slug: "share-code-snippets-online",
+    title: "Share Code Snippets Online Fast",
     description:
       "Learn the fastest practical ways to share short code snippets online for debugging, feedback, classwork, and team discussion.",
     publishedAt: "2026-05-29",
@@ -323,7 +323,7 @@ export const blogPosts: BlogPost[] = [
     ],
   },
   {
-    slug: "online-notepad-for-quick-team-collaboration",
+    slug: "online-notepad-for-teams",
     title: "Online Notepad for Quick Team Collaboration",
     description:
       "See how teams can use an online notepad for rough collaboration, fast internal text sharing, and temporary coordination.",
@@ -397,7 +397,7 @@ export const blogPosts: BlogPost[] = [
     ],
   },
   {
-    slug: "when-to-use-a-temporary-notepad",
+    slug: "when-to-use-temporary-notepad",
     title: "When to Use a Temporary Notepad",
     description:
       "Learn the best situations to use a temporary notepad and when a more permanent tool is the better choice.",
@@ -471,7 +471,7 @@ export const blogPosts: BlogPost[] = [
     ],
   },
   {
-    slug: "how-to-send-text-between-phone-and-laptop",
+    slug: "send-text-phone-laptop",
     title: "How to Send Text Between Phone and Laptop",
     description:
       "Use simple browser-based methods to send text between your phone and laptop quickly without extra apps.",
@@ -545,7 +545,7 @@ export const blogPosts: BlogPost[] = [
     ],
   },
   {
-    slug: "quick-note-sharing-for-classes-and-study-groups",
+    slug: "study-group-note-sharing",
     title: "Quick Note Sharing for Classes and Study Groups",
     description:
       "Use temporary online note pages for study groups, class coordination, revision points, and quick academic collaboration.",
@@ -619,7 +619,7 @@ export const blogPosts: BlogPost[] = [
     ],
   },
   {
-    slug: "benefits-of-no-login-text-sharing-tools",
+    slug: "no-login-text-sharing-tools",
     title: "Benefits of No-Login Text Sharing Tools",
     description:
       "Learn why no-login text-sharing tools are useful for fast collaboration, temporary notes, and friction-free workflows.",
@@ -693,7 +693,7 @@ export const blogPosts: BlogPost[] = [
     ],
   },
   {
-    slug: "simple-ways-to-organize-short-lived-notes",
+    slug: "organize-short-lived-notes",
     title: "Simple Ways to Organize Short-Lived Notes",
     description:
       "Keep temporary notes useful and uncluttered with simple methods for naming, grouping, reviewing, and deleting short-lived text.",

@@ -33,6 +33,7 @@ export default function HomeClient() {
           display: block;
           font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
           color: #111;
+          min-height: 100vh;
         }
 
         .main {
@@ -40,7 +41,7 @@ export default function HomeClient() {
           display: flex;
           justify-content: center;
           align-items: flex-start;
-          padding: 140px 16px 20px;
+          padding: 120px 16px 24px;
         }
 
         .centerBox {
@@ -51,18 +52,19 @@ export default function HomeClient() {
 
         .title {
           margin: 0;
-          font-size: clamp(52px, 10vw, 88px);
-          line-height: 0.95;
+          font-size: clamp(36px, 8vw, 72px);
+          line-height: 0.98;
           font-weight: 700;
           letter-spacing: -0.05em;
           color: #000;
         }
 
         .subtitle {
-          margin: 18px 0 30px;
-          font-size: clamp(18px, 3vw, 26px);
+          margin: 18px auto 30px;
+          max-width: 720px;
+          font-size: clamp(18px, 3vw, 24px);
           color: #4b4b4b;
-          line-height: 1.35;
+          line-height: 1.4;
         }
 
         .form {
@@ -128,9 +130,11 @@ export default function HomeClient() {
         }
 
         .helper {
-          margin: 22px 0 0;
+          margin: 22px auto 0;
+          max-width: 640px;
           font-size: 18px;
           color: #4b4b4b;
+          line-height: 1.5;
         }
 
         .randomBtn {
@@ -140,6 +144,16 @@ export default function HomeClient() {
           color: #4b4b4b;
           font-size: 16px;
           cursor: pointer;
+          text-decoration: underline;
+        }
+
+        .blogLinkWrap {
+          margin-top: 12px;
+        }
+
+        .blogLink {
+          color: #4b4b4b;
+          font-size: 16px;
           text-decoration: underline;
         }
 
@@ -183,12 +197,8 @@ export default function HomeClient() {
             max-width: 100%;
           }
 
-          .title {
-            font-size: 54px;
-          }
-
           .subtitle {
-            margin: 14px 0 22px;
+            margin: 14px auto 22px;
             font-size: 18px;
           }
 
@@ -229,6 +239,10 @@ export default function HomeClient() {
             font-size: 15px;
           }
 
+          .blogLink {
+            font-size: 15px;
+          }
+
           .footer {
             padding: 8px 12px 10px;
           }
@@ -250,7 +264,7 @@ export default function HomeClient() {
           }
 
           .title {
-            font-size: 48px;
+            font-size: 40px;
           }
 
           .subtitle {
@@ -293,9 +307,12 @@ export default function HomeClient() {
       <main className="page">
         <section className="main">
           <div className="centerBox">
-            <h1 className="title">TEMPNOTEPAD</h1>
+            <h1 className="title">Free Online Temporary Notepad</h1>
 
-            <p className="subtitle">The simplest way to share text online</p>
+            <p className="subtitle">
+              Write, save, and share text instantly with a simple URL. No
+              signup, no install, just quick note sharing.
+            </p>
 
             <form onSubmit={handleSubmit} className="form">
               <div className="inputGroup">
@@ -308,6 +325,7 @@ export default function HomeClient() {
                   placeholder="your-secret-page"
                   autoFocus
                   className="input"
+                  aria-label="Enter your custom pad name"
                 />
               </div>
 
@@ -316,7 +334,10 @@ export default function HomeClient() {
               </button>
             </form>
 
-            <p className="helper">No login required</p>
+            <p className="helper">
+              No login required. Create a temporary online notepad and share
+              your text in seconds.
+            </p>
 
             <button
               type="button"
@@ -326,16 +347,9 @@ export default function HomeClient() {
               Use a random pad
             </button>
 
-            <div style={{ marginTop: "12px" }}>
-              <Link
-                href="/blog"
-                style={{
-                  color: "#4b4b4b",
-                  fontSize: "16px",
-                  textDecoration: "underline",
-                }}
-              >
-                Read our blog
+            <div className="blogLinkWrap">
+              <Link href="/blog" className="blogLink">
+                Read online notepad tips
               </Link>
             </div>
           </div>

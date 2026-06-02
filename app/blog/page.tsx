@@ -1,14 +1,29 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { blogPosts } from "@/lib/blogs";
 import SiteFooterNav from "@/components/SiteFooterNav";
 
-export const metadata = {
-  title: "Blog",
+export const metadata: Metadata = {
+  title: "Online Notepad Tips and Guides | TempNotepad",
   description:
     "Read practical guides about temporary notes, online notepads, note sharing, browser text tools, and simple productivity workflows.",
   alternates: {
-    canonical: "https://tempnotepad.com/blog",
+    canonical: "/blog",
+  },
+  openGraph: {
+    title: "Online Notepad Tips and Guides | TempNotepad",
+    description:
+      "Read practical guides about temporary notes, online notepads, note sharing, browser text tools, and simple productivity workflows.",
+    url: "/blog",
+    siteName: "TempNotepad",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Online Notepad Tips and Guides | TempNotepad",
+    description:
+      "Read practical guides about temporary notes, online notepads, note sharing, browser text tools, and simple productivity workflows.",
   },
 };
 
@@ -28,6 +43,24 @@ const featuredLinks = [
 ];
 
 export default function BlogPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Online Notepad Tips and Guides | TempNotepad",
+    url: "https://tempnotepad.com/blog",
+    description:
+      "Read practical guides about temporary notes, online notepads, note sharing, browser text tools, and simple productivity workflows.",
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: blogPosts.map((post, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: `https://tempnotepad.com/blog/${post.slug}`,
+        name: post.title,
+      })),
+    },
+  };
+
   return (
     <main
       style={{
@@ -38,6 +71,13 @@ export default function BlogPage() {
         color: "#111",
       }}
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+
       <div
         style={{
           maxWidth: "980px",
@@ -54,7 +94,7 @@ export default function BlogPage() {
             fontSize: "14px",
           }}
         >
-          ← Back to Home
+          ← Back to TempNotepad home
         </Link>
 
         <h1
@@ -65,7 +105,7 @@ export default function BlogPage() {
             letterSpacing: "-0.04em",
           }}
         >
-          TempNotepad Blog
+          Online Notepad Tips and Guides
         </h1>
 
         <p
@@ -77,8 +117,9 @@ export default function BlogPage() {
             maxWidth: "720px",
           }}
         >
-          Explore useful articles about temporary note sharing, browser text tools,
-          lightweight collaboration, and practical productivity workflows.
+          Read practical guides about temporary notes, online notepads, browser
+          text tools, note sharing, and simple productivity workflows with
+          TempNotepad.
         </p>
 
         <section
@@ -107,8 +148,8 @@ export default function BlogPage() {
               color: "#444",
             }}
           >
-            If you are new to TempNotepad, these guides explain the most common use
-            cases for temporary online notes and quick text sharing.
+            If you are new to TempNotepad, these guides explain common use cases
+            for temporary online notes, browser writing, and quick text sharing.
           </p>
 
           <div
@@ -245,7 +286,7 @@ export default function BlogPage() {
                     textDecoration: "underline",
                   }}
                 >
-                  Read article: {post.title}
+                  Read more about {post.title}
                 </Link>
               </div>
             </article>
@@ -278,8 +319,9 @@ export default function BlogPage() {
               color: "#444",
             }}
           >
-            TempNotepad is built for quick browser-based writing and text sharing.
-            You can also return to the homepage to try the tool directly.
+            TempNotepad is built for quick browser-based writing and simple text
+            sharing. You can return to the homepage to create a temporary note
+            instantly.
           </p>
 
           <Link
@@ -290,7 +332,7 @@ export default function BlogPage() {
               fontSize: "16px",
             }}
           >
-            Open TempNotepad homepage
+            Open the TempNotepad homepage
           </Link>
         </section>
 

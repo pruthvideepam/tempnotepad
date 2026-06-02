@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import HomeClient from "./HomeClient";
 
 const siteUrl = "https://tempnotepad.com";
-const title = "TempNotepad — Free Online Temporary Notepad";
+const title = "Free Online Temporary Notepad | TempNotepad";
 const description =
   "TempNotepad is a free online temporary notepad to write, save, and share text instantly with a simple URL. No signup, no install, just quick note sharing.";
+const ogImage = `${siteUrl}/opengraph-image.png`;
 
 export const metadata: Metadata = {
   title,
@@ -18,11 +19,20 @@ export const metadata: Metadata = {
     url: "/",
     siteName: "TempNotepad",
     type: "website",
+    images: [
+      {
+        url: ogImage,
+        width: 1200,
+        height: 630,
+        alt: "TempNotepad homepage preview",
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title,
     description,
+    images: [ogImage],
   },
 };
 
