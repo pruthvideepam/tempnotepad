@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 const featuredLinks = [
   {
-    href: "/blog/how-to-share-temporary-notes-online",
+    href: "/blog/share-temporary-notes-online",
     label: "How to Share Temporary Notes Online Quickly",
   },
   {
@@ -37,7 +37,7 @@ const featuredLinks = [
     label: "Temporary Notes vs Permanent Notes",
   },
   {
-    href: "/blog/best-uses-of-online-notepad-for-students",
+    href: "/blog/online-notepad-for-students",
     label: "Best Uses of an Online Notepad for Students",
   },
 ];
