@@ -42,13 +42,13 @@ export default function HomeClient() {
           display: flex;
           justify-content: center;
           align-items: flex-start;
-          padding: 110px 16px 32px;
+          padding: 110px 16px 48px;
           flex: 1;
         }
 
         .centerBox {
           width: 100%;
-          max-width: 760px;
+          max-width: 860px;
           text-align: center;
         }
 
@@ -63,7 +63,7 @@ export default function HomeClient() {
 
         .subtitle {
           margin: 18px auto 28px;
-          max-width: 720px;
+          max-width: 760px;
           font-size: clamp(18px, 3vw, 24px);
           color: #4b4b4b;
           line-height: 1.45;
@@ -115,7 +115,7 @@ export default function HomeClient() {
 
         .customWrap {
           margin: 34px auto 0;
-          max-width: 680px;
+          max-width: 700px;
           padding: 22px 20px;
           border: 1px solid #d0d0d0;
           border-radius: 14px;
@@ -206,19 +206,92 @@ export default function HomeClient() {
           line-height: 1.5;
         }
 
-        .blogLinkWrap {
-          margin-top: 18px;
+        .section {
+          margin: 52px auto 0;
+          max-width: 820px;
+          text-align: left;
+        }
+
+        .sectionTitle {
+          margin: 0 0 14px;
+          font-size: 28px;
+          line-height: 1.2;
+          color: #111;
           text-align: center;
         }
 
-        .blogLink {
-          color: #4b4b4b;
+        .sectionIntro {
+          margin: 0 auto 22px;
+          max-width: 760px;
+          font-size: 17px;
+          line-height: 1.7;
+          color: #555;
+          text-align: center;
+        }
+
+        .grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 16px;
+        }
+
+        .card {
+          background: #fff;
+          border: 1px solid #d8d8d8;
+          border-radius: 14px;
+          padding: 18px 18px 16px;
+          text-align: left;
+        }
+
+        .cardTitle {
+          margin: 0 0 8px;
+          font-size: 18px;
+          line-height: 1.35;
+          color: #111;
+        }
+
+        .cardText {
+          margin: 0;
+          font-size: 15px;
+          line-height: 1.65;
+          color: #555;
+        }
+
+        .stepsWrap {
+          background: #fff;
+          border: 1px solid #d8d8d8;
+          border-radius: 14px;
+          padding: 20px;
+        }
+
+        .steps {
+          margin: 0;
+          padding-left: 20px;
+          color: #555;
+        }
+
+        .steps li {
+          margin-bottom: 10px;
+          font-size: 16px;
+          line-height: 1.65;
+        }
+
+        .linkSection {
+          margin-top: 20px;
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 12px 18px;
+        }
+
+        .textLink {
+          color: #222;
           font-size: 16px;
           text-decoration: underline;
         }
 
         .footer {
-          padding: 10px 16px 14px;
+          padding: 14px 16px 16px;
           text-align: center;
           color: #444;
         }
@@ -247,9 +320,15 @@ export default function HomeClient() {
           color: #444;
         }
 
+        @media (max-width: 900px) {
+          .grid {
+            grid-template-columns: 1fr;
+          }
+        }
+
         @media (max-width: 640px) {
           .main {
-            padding: 76px 14px 16px;
+            padding: 76px 14px 24px;
           }
 
           .centerBox {
@@ -319,8 +398,24 @@ export default function HomeClient() {
             font-size: 14px;
           }
 
-          .blogLink {
-            font-size: 15px;
+          .section {
+            margin-top: 40px;
+          }
+
+          .sectionTitle {
+            font-size: 24px;
+          }
+
+          .sectionIntro {
+            font-size: 16px;
+          }
+
+          .card {
+            padding: 16px;
+          }
+
+          .stepsWrap {
+            padding: 16px;
           }
 
           .footer {
@@ -385,11 +480,12 @@ export default function HomeClient() {
       <main className="page">
         <section className="main">
           <div className="centerBox">
-            <h1 className="title">Create a temporary online notepad instantly</h1>
+            <h1 className="title">Free online notepad for temporary notes</h1>
 
             <p className="subtitle">
-              Open a private note in one click. No signup, no install, just type,
-              save, and share with a simple link.
+              TempNotepad is a simple online notepad for temporary notes, quick writing,
+  and easy text sharing. Open a note instantly, use a custom link, and start
+  typing without signup or installation.
             </p>
 
             <button
@@ -402,15 +498,16 @@ export default function HomeClient() {
 
             <div className="trustRow" aria-label="Key benefits">
               <span className="trustItem">No signup required</span>
-              <span className="trustItem">Share with a simple URL</span>
-              <span className="trustItem">Works on phone and desktop</span>
+              <span className="trustItem">Custom URL or random link</span>
+              <span className="trustItem">Works on desktop and mobile</span>
             </div>
 
             <div className="customWrap">
-              <h2 className="customTitle">Want a custom link instead?</h2>
+              <h2 className="customTitle">Open your own note link</h2>
 
               <p className="customText">
-                Choose your own pad name if you want a memorable URL to share.
+                Create a custom temporary note URL if you want something easy to
+                remember and share.
               </p>
 
               <form onSubmit={handleSubmit} className="form">
@@ -421,28 +518,139 @@ export default function HomeClient() {
                     type="text"
                     value={padName}
                     onChange={(e) => setPadName(e.target.value)}
-                    placeholder="your-secret-page"
+                    placeholder="your-note-name"
                     className="input"
                     aria-label="Enter your custom pad name"
                   />
                 </div>
 
                 <button type="submit" className="submitBtn">
-                  Open custom pad
+                  Open custom note
                 </button>
               </form>
 
               <p className="helper">
-                Tip: use letters, numbers, or hyphens to create a clean custom
-                link.
+                Use letters, numbers, and hyphens to create a clean note link.
               </p>
             </div>
 
-            <div className="blogLinkWrap">
-              <Link href="/blog" className="blogLink">
-                Read online notepad tips
-              </Link>
-            </div>
+            <section className="section" aria-labelledby="why-tempnotepad">
+              <h2 id="why-tempnotepad" className="sectionTitle">
+                Why use TempNotepad
+              </h2>
+
+              <p className="sectionIntro">
+                TempNotepad is built for fast writing and simple sharing. It works
+                well when you need a temporary note, a quick browser notepad, or a
+                lightweight page to share text with someone else.
+              </p>
+
+              <div className="grid">
+                <article className="card">
+                  <h3 className="cardTitle">Write instantly</h3>
+                  <p className="cardText">
+                    Open a note in seconds and start typing right away without
+                    creating an account or installing an app.
+                  </p>
+                </article>
+
+                <article className="card">
+                  <h3 className="cardTitle">Share with a simple link</h3>
+                  <p className="cardText">
+                    Each note lives at its own URL, which makes it easy to share
+                    text, instructions, drafts, or snippets.
+                  </p>
+                </article>
+
+                <article className="card">
+                  <h3 className="cardTitle">Use it anywhere</h3>
+                  <p className="cardText">
+                    TempNotepad works in a browser on desktop and mobile, so you
+                    can open notes quickly from almost any device.
+                  </p>
+                </article>
+              </div>
+            </section>
+
+            <section className="section" aria-labelledby="how-it-works">
+              <h2 id="how-it-works" className="sectionTitle">
+                How it works
+              </h2>
+
+              <div className="stepsWrap">
+                <ol className="steps">
+                  <li>Open a random note or choose your own custom note link.</li>
+                  <li>Type your text directly in the browser.</li>
+                  <li>Save the page link and reopen it later when needed.</li>
+                  <li>Share the link if you want another person to view or edit the note.</li>
+                </ol>
+              </div>
+            </section>
+
+            <section className="section" aria-labelledby="common-uses">
+              <h2 id="common-uses" className="sectionTitle">
+                Common uses for an online temporary notepad
+              </h2>
+
+              <div className="grid">
+                <article className="card">
+                  <h3 className="cardTitle">Quick reminders</h3>
+                  <p className="cardText">
+                    Save short notes, rough thoughts, to-do points, and temporary
+                    reminders when you do not want a full notes app.
+                  </p>
+                </article>
+
+                <article className="card">
+                  <h3 className="cardTitle">Text sharing</h3>
+                  <p className="cardText">
+                    Share plain text, instructions, drafts, links, or copied
+                    snippets with a simple web address.
+                  </p>
+                </article>
+
+                <article className="card">
+                  <h3 className="cardTitle">Study and work notes</h3>
+                  <p className="cardText">
+                    Use TempNotepad for short study notes, meeting bullets, coding
+                    snippets, and browser-based scratch writing.
+                  </p>
+                </article>
+              </div>
+
+              <div className="linkSection">
+                <Link href="/blog/share-temporary-notes-online" className="textLink">
+                  How to share temporary notes online
+                </Link>
+                <Link
+                  href="/blog/best-uses-of-online-notepad-for-students"
+                  className="textLink"
+                >
+                  Best uses of online notepad for students
+                </Link>
+                <Link href="/faq" className="textLink">
+                  Read frequently asked questions
+                </Link>
+              </div>
+            </section>
+
+            <section className="section" aria-labelledby="learn-more">
+              <h2 id="learn-more" className="sectionTitle">
+                Learn more about TempNotepad
+              </h2>
+
+              <div className="linkSection">
+                <Link href="/blog" className="textLink">
+                  Read the blog
+                </Link>
+                <Link href="/about" className="textLink">
+                  About TempNotepad
+                </Link>
+                <Link href="/contact" className="textLink">
+                  Contact
+                </Link>
+              </div>
+            </section>
           </div>
         </section>
 

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import HomeClient from "./HomeClient";
 
 const siteUrl = "https://tempnotepad.com";
-const title = "Free Online Temporary Notepad | TempNotepad";
+const title = "Free Online Notepad for Temporary Notes | TempNotepad";
 const description =
-  "TempNotepad is a free online temporary notepad to write, save, and share text instantly with a simple URL. No signup, no install, just quick note sharing.";
+  "TempNotepad is a free online notepad for temporary notes, quick writing, and simple text sharing. No signup required. Open a link and start writing instantly.";
 const ogImage = `${siteUrl}/opengraph-image.png`;
 
 export const metadata: Metadata = {
@@ -61,6 +61,19 @@ export default function HomePage() {
           "@type": "WebSite",
           name: "TempNotepad",
           url: siteUrl,
+        },
+      },
+      {
+        "@type": "SoftwareApplication",
+        name: "TempNotepad",
+        applicationCategory: "ProductivityApplication",
+        operatingSystem: "Web",
+        url: siteUrl,
+        description,
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
         },
       },
     ],

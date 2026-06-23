@@ -4,26 +4,32 @@ import Link from "next/link";
 import { blogPosts } from "@/lib/blogs";
 import SiteFooterNav from "@/components/SiteFooterNav";
 
+const siteUrl = "https://tempnotepad.com";
+const pageTitle = "Online Notepad Tips and Guides | TempNotepad";
+const pageDescription =
+  "Read practical guides about online notepads, temporary notes, text sharing, browser writing, and simple productivity workflows with TempNotepad.";
+
 export const metadata: Metadata = {
-  title: "Online Notepad Tips and Guides | TempNotepad",
-  description:
-    "Read practical guides about temporary notes, online notepads, note sharing, browser text tools, and simple productivity workflows.",
+  title: pageTitle,
+  description: pageDescription,
   alternates: {
-    canonical: "/blog",
+    canonical: `${siteUrl}/blog`,
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
   openGraph: {
-    title: "Online Notepad Tips and Guides | TempNotepad",
-    description:
-      "Read practical guides about temporary notes, online notepads, note sharing, browser text tools, and simple productivity workflows.",
-    url: "/blog",
+    title: pageTitle,
+    description: pageDescription,
+    url: `${siteUrl}/blog`,
     siteName: "TempNotepad",
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "Online Notepad Tips and Guides | TempNotepad",
-    description:
-      "Read practical guides about temporary notes, online notepads, note sharing, browser text tools, and simple productivity workflows.",
+    title: pageTitle,
+    description: pageDescription,
   },
 };
 
@@ -33,29 +39,42 @@ const featuredLinks = [
     label: "How to Share Temporary Notes Online Quickly",
   },
   {
-    href: "/blog/temporary-notes-vs-permanent-notes",
-    label: "Temporary Notes vs Permanent Notes",
+    href: "/blog/online-notepad-for-students",
+    label: "Online Notepad for Students: Best Uses and Benefits",
   },
   {
-    href: "/blog/online-notepad-for-students",
-    label: "Best Uses of an Online Notepad for Students",
+    href: "/blog/when-to-use-temporary-notepad",
+    label: "When to Use a Temporary Notepad",
   },
+];
+
+const priorityOrder = [
+  "share-temporary-notes-online",
+  "online-notepad-for-students",
+  "when-to-use-temporary-notepad",
+  "send-text-phone-laptop",
+];
+
+const sortedPosts = [
+  ...blogPosts.filter((post) => priorityOrder.includes(post.slug)).sort((a, b) => {
+    return priorityOrder.indexOf(a.slug) - priorityOrder.indexOf(b.slug);
+  }),
+  ...blogPosts.filter((post) => !priorityOrder.includes(post.slug)),
 ];
 
 export default function BlogPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Online Notepad Tips and Guides | TempNotepad",
-    url: "https://tempnotepad.com/blog",
-    description:
-      "Read practical guides about temporary notes, online notepads, note sharing, browser text tools, and simple productivity workflows.",
+    name: pageTitle,
+    url: `${siteUrl}/blog`,
+    description: pageDescription,
     mainEntity: {
       "@type": "ItemList",
-      itemListElement: blogPosts.map((post, index) => ({
+      itemListElement: sortedPosts.map((post, index) => ({
         "@type": "ListItem",
         position: index + 1,
-        url: `https://tempnotepad.com/blog/${post.slug}`,
+        url: `${siteUrl}/blog/${post.slug}`,
         name: post.title,
       })),
     },
@@ -117,9 +136,9 @@ export default function BlogPage() {
             maxWidth: "720px",
           }}
         >
-          Read practical guides about temporary notes, online notepads, browser
-          text tools, note sharing, and simple productivity workflows with
-          TempNotepad.
+          Explore practical guides about online notepads, temporary notes, quick
+          text sharing, browser writing, and simple ways to use TempNotepad for
+          study, work, and everyday tasks.
         </p>
 
         <section
@@ -148,8 +167,9 @@ export default function BlogPage() {
               color: "#444",
             }}
           >
-            If you are new to TempNotepad, these guides explain common use cases
-            for temporary online notes, browser writing, and quick text sharing.
+            If you are new to TempNotepad, start with these guides to understand
+            how temporary online notes work, when to use them, and how to share
+            text quickly with a simple link.
           </p>
 
           <div
@@ -181,7 +201,7 @@ export default function BlogPage() {
             gap: "22px",
           }}
         >
-          {blogPosts.map((post) => (
+          {sortedPosts.map((post) => (
             <article
               key={post.slug}
               style={{
@@ -319,9 +339,9 @@ export default function BlogPage() {
               color: "#444",
             }}
           >
-            TempNotepad is built for quick browser-based writing and simple text
-            sharing. You can return to the homepage to create a temporary note
-            instantly.
+            TempNotepad is built for fast browser-based writing, temporary
+            notes, and simple text sharing. Open the homepage to create a note
+            instantly and start writing without signup.
           </p>
 
           <Link

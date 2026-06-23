@@ -7,6 +7,7 @@ type PadEditorProps = {
   slug: string;
   initialContent: string;
   legalHold?: boolean;
+  creationBlocked?: boolean;
 };
 
 const AUTOSAVE_DELAY_MS = 90 * 1000;
@@ -15,16 +16,17 @@ export default function PadEditor({
   slug,
   initialContent,
   legalHold = false,
+  creationBlocked = false,
 }: PadEditorProps) {
   const [content, setContent] = useState(initialContent);
 
-  const { saveStatus, saveNow } = useDebouncedSave({
+  const { saveStatus, saveErrorMessage, saveNow } = useDebouncedSave({
     slug,
     content,
     delay: AUTOSAVE_DELAY_MS,
   });
 
-  const isLocked = legalHold;
+  const isLocked = legalHold || creationBlocked;
 
   return (
     <main
@@ -74,8 +76,10 @@ export default function PadEditor({
           <div
             style={{
               fontSize: "13px",
-              color: isLocked
+              color: legalHold
                 ? "#b45309"
+                : creationBlocked
+                ? "#b91c1c"
                 : saveStatus === "saving"
                 ? "#a16207"
                 : saveStatus === "saved"
@@ -84,18 +88,24 @@ export default function PadEditor({
                 ? "#b45309"
                 : saveStatus === "restored"
                 ? "#2563eb"
+                : saveStatus === "limit_reached"
+                ? "#b91c1c"
                 : saveStatus === "error"
                 ? "#dc2626"
                 : "#666",
-              minWidth: "120px",
+              minWidth: "180px",
               textAlign: "right",
             }}
           >
-            {isLocked && "Legal hold"}
+            {legalHold && "Legal hold"}
+            {!legalHold && creationBlocked && "New note limit reached"}
             {!isLocked && saveStatus === "saving" && "Saving..."}
             {!isLocked && saveStatus === "saved" && "Saved"}
             {!isLocked && saveStatus === "deleted" && "Deleted"}
             {!isLocked && saveStatus === "restored" && "Restored"}
+            {!isLocked &&
+              saveStatus === "limit_reached" &&
+              "New note limit reached"}
             {!isLocked && saveStatus === "error" && "Error"}
             {!isLocked && saveStatus === "idle" && ""}
           </div>
@@ -103,16 +113,21 @@ export default function PadEditor({
           <button
             type="button"
             onClick={saveNow}
-            disabled={isLocked}
+            disabled={isLocked || saveStatus === "limit_reached"}
             style={{
               border: "1px solid #d4d4d4",
-              background: isLocked ? "#f5f5f5" : "#fff",
-              color: isLocked ? "#999" : "#111",
+              background:
+                isLocked || saveStatus === "limit_reached" ? "#f5f5f5" : "#fff",
+              color:
+                isLocked || saveStatus === "limit_reached" ? "#999" : "#111",
               borderRadius: "8px",
               padding: "8px 12px",
               fontSize: "14px",
-              cursor: isLocked ? "not-allowed" : "pointer",
-              opacity: isLocked ? 0.75 : 1,
+              cursor:
+                isLocked || saveStatus === "limit_reached"
+                  ? "not-allowed"
+                  : "pointer",
+              opacity: isLocked || saveStatus === "limit_reached" ? 0.75 : 1,
             }}
           >
             Save
@@ -120,7 +135,7 @@ export default function PadEditor({
         </div>
       </header>
 
-      {isLocked && (
+      {legalHold && (
         <div
           style={{
             margin: "16px 16px 0",
@@ -137,10 +152,66 @@ export default function PadEditor({
         </div>
       )}
 
+      {!legalHold && creationBlocked && (
+        <div
+          style={{
+            margin: "16px 16px 0",
+            padding: "14px 16px",
+            border: "1px solid #fecaca",
+            background: "#fef2f2",
+            color: "#991b1b",
+            borderRadius: "10px",
+            fontSize: "14px",
+            lineHeight: 1.6,
+          }}
+        >
+          You’ve reached today’s new note limit. You can still open and edit existing notes, but new notes will be available again tomorrow.
+        </div>
+      )}
+
+      {!isLocked && saveStatus === "limit_reached" && (
+        <div
+          style={{
+            margin: "16px 16px 0",
+            padding: "14px 16px",
+            border: "1px solid #fecaca",
+            background: "#fef2f2",
+            color: "#991b1b",
+            borderRadius: "10px",
+            fontSize: "14px",
+            lineHeight: 1.6,
+          }}
+        >
+          {saveErrorMessage ||
+            "Daily new pad creation limit reached for this IP. You can still edit existing pads, but you cannot create more new pads today."}
+        </div>
+      )}
+
+      {!isLocked && saveStatus === "error" && saveErrorMessage && (
+        <div
+          style={{
+            margin: "16px 16px 0",
+            padding: "14px 16px",
+            border: "1px solid #fecaca",
+            background: "#fef2f2",
+            color: "#991b1b",
+            borderRadius: "10px",
+            fontSize: "14px",
+            lineHeight: 1.6,
+          }}
+        >
+          {saveErrorMessage}
+        </div>
+      )}
+
       <textarea
         value={content}
         onChange={isLocked ? undefined : (e) => setContent(e.target.value)}
-        placeholder="Start typing..."
+        placeholder={
+          creationBlocked
+            ? "You’ve reached today’s new note limit."
+            : "Start typing..."
+        }
         spellCheck={false}
         readOnly={isLocked}
         style={{

@@ -7,17 +7,17 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://tempnotepad.com"),
   title: {
     default: "TempNotepad",
-    template: "%s | TempNotepad",
+    template: "%s",
   },
   description:
-    "TempNotepad is a simple online temporary notepad for quick text sharing, browser notes, and lightweight writing workflows.",
+    "TempNotepad is a free online temporary notepad for quick notes, text sharing, and simple browser writing.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: "TempNotepad",
     description:
-      "Simple browser-based temporary notepad for quick notes and text sharing.",
+      "Free online temporary notepad for quick notes, text sharing, and simple browser writing.",
     url: "/",
     siteName: "TempNotepad",
     type: "website",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "TempNotepad",
     description:
-      "Simple browser-based temporary notepad for quick notes and text sharing.",
+      "Free online temporary notepad for quick notes, text sharing, and simple browser writing.",
   },
 };
 

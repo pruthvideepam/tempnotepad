@@ -3,11 +3,13 @@ import { prisma } from "@/lib/prisma";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { getRequestId, getUserAgent, logPadEvent } from "@/lib/audit";
 
-const MAX_CONTENT_LENGTH = 50 * 1024; // 50 KB
+const MAX_CONTENT_LENGTH = 50 * 1024; // 50 KB;
 
 const GET_LIMIT = 120;
 const PUT_LIMIT = 30;
-const WINDOW_MS = 60 * 1000; // 1 minute
+const WINDOW_MS = 60 * 1000; // 1 minute;
+
+const MAX_NEW_PADS_PER_IP_PER_DAY = 5;
 
 function rateLimitHeaders(limit: number, remaining: number, resetAt: number) {
   return {
@@ -17,13 +19,18 @@ function rateLimitHeaders(limit: number, remaining: number, resetAt: number) {
   };
 }
 
+function startOfCurrentUtcDay() {
+  const now = new Date();
+  return new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
+  );
+}
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const requestId = getRequestId();
   const ipAddress = getClientIp(request);
-  const userAgent = getUserAgent(request);
 
   try {
     const rate = checkRateLimit({
@@ -35,6 +42,9 @@ export async function GET(
     const { slug } = await params;
 
     if (!rate.allowed) {
+      const requestId = getRequestId();
+      const userAgent = getUserAgent(request);
+
       await logPadEvent({
         slug,
         action: "RATE_LIMITED",
@@ -62,23 +72,31 @@ export async function GET(
     });
 
     if (!pad || pad.deletedAt !== null) {
-      await logPadEvent({
-        padId: pad?.id ?? null,
-        slug,
-        action: "VIEWED",
-        ipAddress,
-        userAgent,
-        requestId,
-        metadata: {
-          exists: false,
-          deleted: pad?.deletedAt !== null,
+      const creationWindowStart = startOfCurrentUtcDay();
+
+      const createdTodayCount = await prisma.padAuditLog.count({
+        where: {
+          action: "CREATED",
+          ipAddress,
+          createdAt: {
+            gte: creationWindowStart,
+          },
         },
       });
+
+      const canCreateNewPad =
+        createdTodayCount < MAX_NEW_PADS_PER_IP_PER_DAY;
 
       return NextResponse.json(
         {
           exists: false,
           content: "",
+          creationPolicy: {
+            canCreateNewPad,
+            maxNewPadsPerDay: MAX_NEW_PADS_PER_IP_PER_DAY,
+            createdTodayCount,
+            creationWindowStart: creationWindowStart.toISOString(),
+          },
         },
         {
           status: 200,
@@ -91,20 +109,6 @@ export async function GET(
       where: { slug },
       data: {
         lastViewedAt: new Date(),
-      },
-    });
-
-    await logPadEvent({
-      padId: pad.id,
-      slug,
-      action: "VIEWED",
-      content: pad.content,
-      ipAddress,
-      userAgent,
-      requestId,
-      metadata: {
-        exists: true,
-        deleted: false,
       },
     });
 
@@ -228,6 +232,54 @@ export async function PUT(
       );
     }
 
+    if (!existingPad && trimmedContent.length > 0) {
+      const creationWindowStart = startOfCurrentUtcDay();
+
+      const createdTodayCount = await prisma.padAuditLog.count({
+        where: {
+          action: "CREATED",
+          ipAddress,
+          createdAt: {
+            gte: creationWindowStart,
+          },
+        },
+      });
+
+      if (createdTodayCount >= MAX_NEW_PADS_PER_IP_PER_DAY) {
+        await logPadEvent({
+          slug,
+          action: "RATE_LIMITED",
+          ipAddress,
+          userAgent,
+          requestId,
+          metadata: {
+            method: "PUT",
+            reason: "daily_new_pad_creation_limit",
+            maxNewPadsPerDay: MAX_NEW_PADS_PER_IP_PER_DAY,
+            createdTodayCount,
+            creationWindowStart: creationWindowStart.toISOString(),
+          },
+        });
+
+        return NextResponse.json(
+          {
+            error: "Daily new pad creation limit reached for this IP.",
+            code: "DAILY_PAD_CREATION_LIMIT_REACHED",
+            maxNewPadsPerDay: MAX_NEW_PADS_PER_IP_PER_DAY,
+            createdTodayCount,
+            creationWindowStart: creationWindowStart.toISOString(),
+          },
+          {
+            status: 429,
+            headers: {
+              ...rateLimitHeaders(PUT_LIMIT, rate.remaining, rate.resetAt),
+              "Retry-After": "86400",
+            },
+          }
+        );
+      }
+    }
+
     if (existingPad && trimmedContent.length === 0) {
       const deletedAt = new Date();
 
@@ -243,9 +295,10 @@ export async function PUT(
         slug,
         action: "SOFT_DELETED",
         content: existingPad.content,
-        contentSnapshot: existingPad.content.length <= 5000
-      ? existingPad.content
-      : existingPad.content.slice(0, 5000),
+        contentSnapshot:
+          existingPad.content.length <= 5000
+            ? existingPad.content
+            : existingPad.content.slice(0, 5000),
         ipAddress,
         userAgent,
         requestId,

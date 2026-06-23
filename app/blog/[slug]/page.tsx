@@ -32,17 +32,21 @@ export async function generateMetadata({
     };
   }
 
-  return {
+    return {
     title: post.title,
     description: post.description,
     keywords: post.keywords,
     alternates: {
-      canonical: `/blog/${post.slug}`,
+      canonical: `${siteUrl}/blog/${post.slug}`,
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
     openGraph: {
       title: post.title,
       description: post.description,
-      url: `/blog/${post.slug}`,
+      url: `${siteUrl}/blog/${post.slug}`,
       siteName: "TempNotepad",
       type: "article",
       publishedTime: post.publishedAt,

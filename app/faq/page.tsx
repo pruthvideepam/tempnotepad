@@ -1,61 +1,93 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import SiteFooterNav from "@/components/SiteFooterNav";
 
-export const metadata = {
-  title: "FAQ | TempNotepad",
+export const metadata: Metadata = {
+  title: "Online Notepad FAQ | TempNotepad",
   description:
-    "Frequently asked questions about TempNotepad, temporary online notes, privacy, sharing, and how the tool works.",
+    "Read common questions about TempNotepad, a free online notepad for temporary notes, quick writing, sharing text with a link, and browser-based note taking.",
+  alternates: {
+    canonical: "/faq",
+  },
 };
 
 const faqs = [
   {
     question: "What is TempNotepad?",
     answer:
-      "TempNotepad is a simple browser-based tool for writing and sharing temporary text notes using a direct link.",
+      "TempNotepad is a free online notepad for temporary notes, quick writing, and simple text sharing in your browser.",
   },
   {
-    question: "Do I need to create an account?",
+    question: "How does TempNotepad work?",
     answer:
-      "No. TempNotepad is designed to be fast and simple, so you can start using it without creating an account.",
+      "You open a note page, type directly in the browser, and use the page link when you want to revisit or share the same note.",
+  },
+  {
+    question: "Do I need to sign up to use TempNotepad?",
+    answer:
+      "No. TempNotepad is designed for fast use, so you can start writing without creating an account.",
   },
   {
     question: "Can I share a note with someone else?",
     answer:
-      "Yes. You can share the page link with another person so they can open the same note page.",
+      "Yes. You can share the note link with another person so they can open the same page.",
   },
   {
-    question: "Is TempNotepad for permanent note storage?",
+    question: "Is TempNotepad an online notepad or a permanent notes app?",
     answer:
-      "No. It is best used for temporary writing, quick sharing, rough drafts, short text, and lightweight collaboration.",
+      "TempNotepad is better for temporary notes, quick drafts, short writing, and simple sharing than for long-term permanent note storage.",
   },
   {
-    question: "Can students use TempNotepad for classes?",
+    question: "Can I use TempNotepad on mobile?",
     answer:
-      "Yes. Students can use it for rough notes, quick group sharing, collecting links, and short study collaboration.",
+      "Yes. TempNotepad works in a browser on phones, tablets, and desktop devices.",
   },
   {
     question: "Can I use TempNotepad to move text between phone and laptop?",
     answer:
-      "Yes. That is one of the easiest use cases for a browser-based temporary notepad.",
+      "Yes. One of the easiest use cases is opening the same note link on different devices when you want to move text quickly.",
   },
   {
-    question: "Should I store sensitive information here?",
+    question: "What kind of notes is TempNotepad best for?",
     answer:
-      "It is better to avoid storing highly sensitive, confidential, or regulated information in temporary note-sharing tools unless you fully understand their privacy and security model.",
+      "It works well for quick reminders, copied text, rough drafts, links, simple collaboration, short class notes, and lightweight code snippets.",
   },
   {
-    question: "What kind of content is TempNotepad best for?",
+    question: "Can students use TempNotepad for classes?",
     answer:
-      "It works best for copied text, short reminders, rough notes, links, code snippets, class notes, and one-time collaboration.",
+      "Yes. Students can use it for short study notes, quick group sharing, collecting links, and rough writing during class or revision.",
   },
   {
-    question: "Where can I learn more?",
+    question: "Should I store passwords or sensitive information in TempNotepad?",
     answer:
-      "You can visit the blog section for helpful guides about online note sharing, temporary text tools, and common use cases.",
+      "It is better to avoid storing highly sensitive, confidential, or regulated information in temporary online note tools unless you fully understand their privacy and security model.",
+  },
+  {
+    question: "Can I create a custom note link?",
+    answer:
+      "Yes. TempNotepad lets you open a custom note link when you want a simple URL that is easier to remember and share.",
+  },
+  {
+    question: "Where can I learn more about using an online notepad?",
+    answer:
+      "You can visit the blog for guides about sharing temporary notes online, common note-taking use cases, and practical ways to use a browser-based notepad.",
   },
 ];
 
 export default function FAQPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+
   return (
     <main
       style={{
@@ -66,6 +98,13 @@ export default function FAQPage() {
         color: "#111",
       }}
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+
       <div
         style={{
           maxWidth: "860px",
@@ -93,7 +132,7 @@ export default function FAQPage() {
             letterSpacing: "-0.04em",
           }}
         >
-          Frequently Asked Questions
+          Online Notepad FAQ
         </h1>
 
         <p
@@ -105,8 +144,8 @@ export default function FAQPage() {
             maxWidth: "720px",
           }}
         >
-          Answers to common questions about TempNotepad, how it works, and when
-          to use it.
+          Answers to common questions about TempNotepad, a free online notepad
+          for temporary notes, simple sharing, and quick browser-based writing.
         </p>
 
         <div
