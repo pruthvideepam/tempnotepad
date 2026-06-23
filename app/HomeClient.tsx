@@ -30,10 +30,11 @@ export default function HomeClient() {
       <style jsx>{`
         .page {
           background: #f3f3f3;
-          display: block;
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
           font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
           color: #111;
-          min-height: 100vh;
         }
 
         .main {
@@ -41,7 +42,8 @@ export default function HomeClient() {
           display: flex;
           justify-content: center;
           align-items: flex-start;
-          padding: 120px 16px 24px;
+          padding: 110px 16px 32px;
+          flex: 1;
         }
 
         .centerBox {
@@ -52,7 +54,7 @@ export default function HomeClient() {
 
         .title {
           margin: 0;
-          font-size: clamp(36px, 8vw, 72px);
+          font-size: clamp(38px, 8vw, 72px);
           line-height: 0.98;
           font-weight: 700;
           letter-spacing: -0.05em;
@@ -60,11 +62,79 @@ export default function HomeClient() {
         }
 
         .subtitle {
-          margin: 18px auto 30px;
+          margin: 18px auto 28px;
           max-width: 720px;
           font-size: clamp(18px, 3vw, 24px);
           color: #4b4b4b;
-          line-height: 1.4;
+          line-height: 1.45;
+        }
+
+        .primaryCta {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          height: 58px;
+          padding: 0 28px;
+          min-width: 220px;
+          border: 1px solid #111;
+          border-radius: 10px;
+          background: #111;
+          color: #fff;
+          font-size: 18px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: background 0.18s ease, transform 0.18s ease,
+            border-color 0.18s ease;
+        }
+
+        .primaryCta:hover {
+          background: #222;
+          border-color: #222;
+          transform: translateY(-1px);
+        }
+
+        .primaryCta:active {
+          transform: translateY(0);
+        }
+
+        .trustRow {
+          margin: 16px auto 0;
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 10px 16px;
+          max-width: 680px;
+          color: #4b4b4b;
+          font-size: 15px;
+          line-height: 1.5;
+        }
+
+        .trustItem {
+          white-space: nowrap;
+        }
+
+        .customWrap {
+          margin: 34px auto 0;
+          max-width: 680px;
+          padding: 22px 20px;
+          border: 1px solid #d0d0d0;
+          border-radius: 14px;
+          background: #fff;
+          text-align: left;
+        }
+
+        .customTitle {
+          margin: 0 0 8px;
+          font-size: 20px;
+          line-height: 1.3;
+          color: #111;
+        }
+
+        .customText {
+          margin: 0 0 16px;
+          font-size: 16px;
+          line-height: 1.6;
+          color: #555;
         }
 
         .form {
@@ -77,7 +147,6 @@ export default function HomeClient() {
 
         .inputGroup {
           flex: 1;
-          max-width: 560px;
           min-width: 0;
           display: flex;
           align-items: stretch;
@@ -94,7 +163,7 @@ export default function HomeClient() {
           background: #f7f7f7;
           border-right: 1px solid #c8c8c8;
           color: #4b5563;
-          font-size: 18px;
+          font-size: 17px;
           white-space: nowrap;
           height: 56px;
           flex-shrink: 0;
@@ -107,7 +176,7 @@ export default function HomeClient() {
           outline: none;
           height: 56px;
           padding: 0 18px;
-          font-size: 18px;
+          font-size: 17px;
           color: #111827;
           background: #fff;
         }
@@ -122,33 +191,24 @@ export default function HomeClient() {
           border-radius: 8px;
           background: #f8f8f8;
           color: #333;
-          font-size: 18px;
+          font-size: 17px;
+          font-weight: 600;
           height: 56px;
-          padding: 0 24px;
-          min-width: 96px;
+          padding: 0 22px;
+          min-width: 124px;
           cursor: pointer;
         }
 
         .helper {
-          margin: 22px auto 0;
-          max-width: 640px;
-          font-size: 18px;
-          color: #4b4b4b;
+          margin: 14px 0 0;
+          font-size: 15px;
+          color: #666;
           line-height: 1.5;
         }
 
-        .randomBtn {
-          margin-top: 14px;
-          border: none;
-          background: transparent;
-          color: #4b4b4b;
-          font-size: 16px;
-          cursor: pointer;
-          text-decoration: underline;
-        }
-
         .blogLinkWrap {
-          margin-top: 12px;
+          margin-top: 18px;
+          text-align: center;
         }
 
         .blogLink {
@@ -158,7 +218,6 @@ export default function HomeClient() {
         }
 
         .footer {
-          margin-top: auto;
           padding: 10px 16px 14px;
           text-align: center;
           color: #444;
@@ -190,7 +249,7 @@ export default function HomeClient() {
 
         @media (max-width: 640px) {
           .main {
-            padding: 80px 14px 10px;
+            padding: 76px 14px 16px;
           }
 
           .centerBox {
@@ -202,17 +261,42 @@ export default function HomeClient() {
             font-size: 18px;
           }
 
-          .form {
-            gap: 10px;
+          .primaryCta {
+            width: 100%;
+            min-width: 0;
+            height: 54px;
+            font-size: 17px;
+            padding: 0 20px;
           }
 
-          .inputGroup {
-            max-width: none;
+          .trustRow {
+            margin-top: 14px;
+            gap: 8px 12px;
+            font-size: 14px;
+          }
+
+          .customWrap {
+            margin-top: 28px;
+            padding: 18px 16px;
+          }
+
+          .customTitle {
+            font-size: 18px;
+          }
+
+          .customText {
+            font-size: 15px;
+            margin-bottom: 14px;
+          }
+
+          .form {
+            flex-direction: column;
+            gap: 10px;
           }
 
           .prefix {
             padding: 0 14px;
-            font-size: 16px;
+            font-size: 15px;
             height: 52px;
           }
 
@@ -224,19 +308,15 @@ export default function HomeClient() {
 
           .submitBtn {
             height: 52px;
-            min-width: 78px;
+            min-width: 0;
+            width: 100%;
             padding: 0 16px;
             font-size: 16px;
           }
 
           .helper {
-            margin-top: 16px;
-            font-size: 16px;
-          }
-
-          .randomBtn {
-            margin-top: 10px;
-            font-size: 15px;
+            margin-top: 12px;
+            font-size: 14px;
           }
 
           .blogLink {
@@ -260,7 +340,7 @@ export default function HomeClient() {
 
         @media (max-width: 430px) {
           .main {
-            padding: 60px 12px 8px;
+            padding: 60px 12px 10px;
           }
 
           .title {
@@ -273,25 +353,23 @@ export default function HomeClient() {
 
           .prefix {
             padding: 0 12px;
-            font-size: 15px;
+            font-size: 14px;
             height: 50px;
           }
 
           .input {
             height: 50px;
             padding: 0 12px;
-            font-size: 16px;
+            font-size: 15px;
           }
 
           .submitBtn {
             height: 50px;
-            min-width: 72px;
-            padding: 0 14px;
             font-size: 15px;
           }
 
           .helper {
-            font-size: 15px;
+            font-size: 13px;
           }
 
           .footerLinks {
@@ -307,45 +385,58 @@ export default function HomeClient() {
       <main className="page">
         <section className="main">
           <div className="centerBox">
-            <h1 className="title">Free Online Temporary Notepad</h1>
+            <h1 className="title">Create a temporary online notepad instantly</h1>
 
             <p className="subtitle">
-              Write, save, and share text instantly with a simple URL. No
-              signup, no install, just quick note sharing.
-            </p>
-
-            <form onSubmit={handleSubmit} className="form">
-              <div className="inputGroup">
-                <span className="prefix">tempnotepad.com/</span>
-
-                <input
-                  type="text"
-                  value={padName}
-                  onChange={(e) => setPadName(e.target.value)}
-                  placeholder="your-secret-page"
-                  autoFocus
-                  className="input"
-                  aria-label="Enter your custom pad name"
-                />
-              </div>
-
-              <button type="submit" className="submitBtn">
-                Go!
-              </button>
-            </form>
-
-            <p className="helper">
-              No login required. Create a temporary online notepad and share
-              your text in seconds.
+              Open a private note in one click. No signup, no install, just type,
+              save, and share with a simple link.
             </p>
 
             <button
               type="button"
               onClick={handleRandomPad}
-              className="randomBtn"
+              className="primaryCta"
             >
-              Use a random pad
+              Start writing now
             </button>
+
+            <div className="trustRow" aria-label="Key benefits">
+              <span className="trustItem">No signup required</span>
+              <span className="trustItem">Share with a simple URL</span>
+              <span className="trustItem">Works on phone and desktop</span>
+            </div>
+
+            <div className="customWrap">
+              <h2 className="customTitle">Want a custom link instead?</h2>
+
+              <p className="customText">
+                Choose your own pad name if you want a memorable URL to share.
+              </p>
+
+              <form onSubmit={handleSubmit} className="form">
+                <div className="inputGroup">
+                  <span className="prefix">tempnotepad.com/</span>
+
+                  <input
+                    type="text"
+                    value={padName}
+                    onChange={(e) => setPadName(e.target.value)}
+                    placeholder="your-secret-page"
+                    className="input"
+                    aria-label="Enter your custom pad name"
+                  />
+                </div>
+
+                <button type="submit" className="submitBtn">
+                  Open custom pad
+                </button>
+              </form>
+
+              <p className="helper">
+                Tip: use letters, numbers, or hyphens to create a clean custom
+                link.
+              </p>
+            </div>
 
             <div className="blogLinkWrap">
               <Link href="/blog" className="blogLink">

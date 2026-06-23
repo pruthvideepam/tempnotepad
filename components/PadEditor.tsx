@@ -82,6 +82,8 @@ export default function PadEditor({
                 ? "#15803d"
                 : saveStatus === "deleted"
                 ? "#b45309"
+                : saveStatus === "restored"
+                ? "#2563eb"
                 : saveStatus === "error"
                 ? "#dc2626"
                 : "#666",
@@ -93,6 +95,7 @@ export default function PadEditor({
             {!isLocked && saveStatus === "saving" && "Saving..."}
             {!isLocked && saveStatus === "saved" && "Saved"}
             {!isLocked && saveStatus === "deleted" && "Deleted"}
+            {!isLocked && saveStatus === "restored" && "Restored"}
             {!isLocked && saveStatus === "error" && "Error"}
             {!isLocked && saveStatus === "idle" && ""}
           </div>

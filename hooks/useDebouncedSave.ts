@@ -2,7 +2,13 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-type SaveStatus = "idle" | "saving" | "saved" | "deleted" | "error";
+type SaveStatus =
+  | "idle"
+  | "saving"
+  | "saved"
+  | "deleted"
+  | "restored"
+  | "error";
 
 type UseDebouncedSaveParams = {
   slug: string;
@@ -19,8 +25,25 @@ export function useDebouncedSave({
   const isFirstRender = useRef(true);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const requestSeqRef = useRef(0);
+
+  const clearResetTimer = () => {
+    if (resetTimerRef.current) {
+      clearTimeout(resetTimerRef.current);
+      resetTimerRef.current = null;
+    }
+  };
+
+  const scheduleIdleReset = () => {
+    clearResetTimer();
+    resetTimerRef.current = setTimeout(() => {
+      setStatus("idle");
+    }, 1200);
+  };
 
   const saveNow = useCallback(async () => {
+    const requestSeq = ++requestSeqRef.current;
+
     try {
       setStatus("saving");
 
@@ -40,6 +63,10 @@ export function useDebouncedSave({
 
       const data = await res.json();
 
+      if (requestSeq !== requestSeqRef.current) {
+        return;
+      }
+
       if (data?.skipped) {
         setStatus("idle");
         return;
@@ -47,28 +74,23 @@ export function useDebouncedSave({
 
       if (data?.deleted) {
         setStatus("deleted");
+        scheduleIdleReset();
+        return;
+      }
 
-        if (resetTimerRef.current) {
-          clearTimeout(resetTimerRef.current);
-        }
-
-        resetTimerRef.current = setTimeout(() => {
-          setStatus("idle");
-        }, 1200);
-
+      if (data?.restored) {
+        setStatus("restored");
+        scheduleIdleReset();
         return;
       }
 
       setStatus("saved");
-
-      if (resetTimerRef.current) {
-        clearTimeout(resetTimerRef.current);
+      scheduleIdleReset();
+    } catch (error) {
+      if (requestSeq !== requestSeqRef.current) {
+        return;
       }
 
-      resetTimerRef.current = setTimeout(() => {
-        setStatus("idle");
-      }, 1200);
-    } catch (error) {
       console.error("Auto-save failed:", error);
       setStatus("error");
     }
@@ -91,6 +113,7 @@ export function useDebouncedSave({
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
       }
     };
   }, [content, delay, saveNow]);

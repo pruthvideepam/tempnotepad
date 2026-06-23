@@ -197,45 +197,44 @@ export async function PUT(
     const trimmedContent = content.trim();
 
     const existingPad = await prisma.pad.findUnique({
-  where: { slug },
-});
+      where: { slug },
+    });
 
-if (!existingPad && trimmedContent.length === 0) {
-  return NextResponse.json(
-    {
-      success: true,
-      skipped: true,
-      deleted: false,
-      message: "Empty new pad was not saved",
-    },
-    {
-      status: 200,
-      headers: rateLimitHeaders(PUT_LIMIT, rate.remaining, rate.resetAt),
+    if (!existingPad && trimmedContent.length === 0) {
+      return NextResponse.json(
+        {
+          success: true,
+          skipped: true,
+          deleted: false,
+          message: "Empty new pad was not saved",
+        },
+        {
+          status: 200,
+          headers: rateLimitHeaders(PUT_LIMIT, rate.remaining, rate.resetAt),
+        }
+      );
     }
-  );
-}
 
-if (existingPad?.legalHold) {
-  return NextResponse.json(
-    {
-      error:
-        "This pad is under legal hold and cannot be modified or deleted.",
-    },
-    {
-      status: 423,
-      headers: rateLimitHeaders(PUT_LIMIT, rate.remaining, rate.resetAt),
+    if (existingPad?.legalHold) {
+      return NextResponse.json(
+        {
+          error:
+            "This pad is under legal hold and cannot be modified or deleted.",
+        },
+        {
+          status: 423,
+          headers: rateLimitHeaders(PUT_LIMIT, rate.remaining, rate.resetAt),
+        }
+      );
     }
-  );
-}
 
-if (existingPad && trimmedContent.length === 0) {
+    if (existingPad && trimmedContent.length === 0) {
+      const deletedAt = new Date();
 
       const deletedPad = await prisma.pad.update({
         where: { slug },
         data: {
-          deletedAt: new Date(),
-          content: "",
-          lastViewedAt: new Date(),
+          deletedAt,
         },
       });
 
@@ -243,13 +242,16 @@ if (existingPad && trimmedContent.length === 0) {
         padId: deletedPad.id,
         slug,
         action: "SOFT_DELETED",
-        content,
-        contentSnapshot: "",
+        content: existingPad.content,
+        contentSnapshot: existingPad.content.length <= 5000
+      ? existingPad.content
+      : existingPad.content.slice(0, 5000),
         ipAddress,
         userAgent,
         requestId,
         metadata: {
           reason: "emptied_by_user",
+          deletedAt: deletedAt.toISOString(),
         },
       });
 
@@ -261,7 +263,7 @@ if (existingPad && trimmedContent.length === 0) {
           pad: {
             id: deletedPad.id,
             slug: deletedPad.slug,
-            content: deletedPad.content,
+            content: "",
             createdAt: deletedPad.createdAt,
             updatedAt: deletedPad.updatedAt,
             deletedAt: deletedPad.deletedAt,
@@ -276,19 +278,20 @@ if (existingPad && trimmedContent.length === 0) {
     }
 
     const wasDeleted = existingPad?.deletedAt != null;
+    const now = new Date();
 
     const pad = await prisma.pad.upsert({
       where: { slug },
       update: {
         content,
         deletedAt: null,
-        lastViewedAt: new Date(),
+        lastViewedAt: now,
       },
       create: {
         slug,
         content,
         deletedAt: null,
-        lastViewedAt: new Date(),
+        lastViewedAt: now,
       },
     });
 
@@ -313,12 +316,14 @@ if (existingPad && trimmedContent.length === 0) {
         success: true,
         skipped: false,
         deleted: false,
+        restored: wasDeleted,
         pad: {
           id: pad.id,
           slug: pad.slug,
           content: pad.content,
           createdAt: pad.createdAt,
           updatedAt: pad.updatedAt,
+          deletedAt: pad.deletedAt,
           legalHold: pad.legalHold,
         },
       },

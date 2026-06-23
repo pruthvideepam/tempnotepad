@@ -26,18 +26,33 @@ async function getPadData(slug: string): Promise<{
   const pad = await prisma.pad.findUnique({
     where: { slug },
     select: {
+      id: true,
       content: true,
       deletedAt: true,
       legalHold: true,
     },
   });
 
-  if (!pad || pad.deletedAt !== null) {
+  if (!pad) {
     return {
       content: "",
       legalHold: false,
     };
   }
+
+  if (pad.deletedAt !== null) {
+    return {
+      content: "",
+      legalHold: false,
+    };
+  }
+
+  await prisma.pad.update({
+    where: { id: pad.id },
+    data: {
+      lastViewedAt: new Date(),
+    },
+  });
 
   return {
     content: pad.content,
