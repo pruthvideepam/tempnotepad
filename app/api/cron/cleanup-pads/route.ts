@@ -18,6 +18,13 @@ function isAuthorized(request: Request) {
 
 export async function GET(request: Request) {
   if (!isAuthorized(request)) {
+    console.warn(
+      JSON.stringify({
+        event: "cron.pads_cleanup.unauthorized",
+        path: "/api/cron/cleanup-pads",
+      })
+    );
+
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -30,16 +37,26 @@ export async function GET(request: Request) {
     now.getTime() - RETENTION_DAYS * 24 * 60 * 60 * 1000
   );
 
+  console.log(
+    JSON.stringify({
+      event: "cron.pads_cleanup.started",
+      requestId,
+      inactiveDays: INACTIVE_DAYS,
+      retentionDays: RETENTION_DAYS,
+      batchSize: BATCH_SIZE,
+      inactivityCutoff: inactivityCutoff.toISOString(),
+      retentionCutoff: retentionCutoff.toISOString(),
+      executedAt: now.toISOString(),
+    })
+  );
+
   try {
     const activePadsToSoftDelete = await prisma.pad.findMany({
       where: {
         deletedAt: null,
         legalHold: false,
         updatedAt: { lt: inactivityCutoff },
-        OR: [
-          { lastViewedAt: null },
-          { lastViewedAt: { lt: inactivityCutoff } },
-        ],
+        OR: [{ lastViewedAt: null }, { lastViewedAt: { lt: inactivityCutoff } }],
       },
       select: {
         id: true,
@@ -129,8 +146,28 @@ export async function GET(request: Request) {
       hardDeletedCount += 1;
     }
 
+    console.log(
+      JSON.stringify({
+        event: "cron.pads_cleanup.completed",
+        requestId,
+        softDeleteCandidates: activePadsToSoftDelete.length,
+        hardDeleteCandidates: padsToHardDelete.length,
+        softDeletedCount,
+        hardDeletedCount,
+        inactiveDays: INACTIVE_DAYS,
+        retentionDays: RETENTION_DAYS,
+        batchSize: BATCH_SIZE,
+        inactivityCutoff: inactivityCutoff.toISOString(),
+        retentionCutoff: retentionCutoff.toISOString(),
+        executedAt: new Date().toISOString(),
+      })
+    );
+
     return NextResponse.json({
       success: true,
+      requestId,
+      softDeleteCandidates: activePadsToSoftDelete.length,
+      hardDeleteCandidates: padsToHardDelete.length,
       softDeletedCount,
       hardDeletedCount,
       inactiveDays: INACTIVE_DAYS,
@@ -139,7 +176,15 @@ export async function GET(request: Request) {
       retentionCutoff: retentionCutoff.toISOString(),
     });
   } catch (error) {
-    console.error("GET /api/cron/cleanup-pads error:", error);
+    console.error(
+      JSON.stringify({
+        event: "cron.pads_cleanup.failed",
+        requestId,
+        inactiveDays: INACTIVE_DAYS,
+        retentionDays: RETENTION_DAYS,
+        error: error instanceof Error ? error.message : "Unknown error",
+      })
+    );
 
     return NextResponse.json(
       { error: "Failed to clean up pads" },

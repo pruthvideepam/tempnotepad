@@ -16,6 +16,13 @@ function isAuthorized(request: Request) {
 
 export async function GET(request: Request) {
   if (!isAuthorized(request)) {
+    console.warn(
+      JSON.stringify({
+        event: "cron.audit_logs_cleanup.unauthorized",
+        path: "/api/cron/cleanup-audit-logs",
+      })
+    );
+
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -25,7 +32,25 @@ export async function GET(request: Request) {
     now.getTime() - AUDIT_LOG_RETENTION_DAYS * 24 * 60 * 60 * 1000
   );
 
+  console.log(
+    JSON.stringify({
+      event: "cron.audit_logs_cleanup.started",
+      requestId,
+      retentionDays: AUDIT_LOG_RETENTION_DAYS,
+      cutoff: cutoff.toISOString(),
+      executedAt: now.toISOString(),
+    })
+  );
+
   try {
+    const matchingCount = await prisma.padAuditLog.count({
+      where: {
+        createdAt: {
+          lt: cutoff,
+        },
+      },
+    });
+
     const result = await prisma.padAuditLog.deleteMany({
       where: {
         createdAt: {
@@ -34,16 +59,37 @@ export async function GET(request: Request) {
       },
     });
 
+    console.log(
+      JSON.stringify({
+        event: "cron.audit_logs_cleanup.completed",
+        requestId,
+        retentionDays: AUDIT_LOG_RETENTION_DAYS,
+        cutoff: cutoff.toISOString(),
+        matchingCount,
+        deletedCount: result.count,
+        executedAt: new Date().toISOString(),
+      })
+    );
+
     return NextResponse.json({
       success: true,
       requestId,
+      matchingCount,
       deletedCount: result.count,
       retentionDays: AUDIT_LOG_RETENTION_DAYS,
       cutoff: cutoff.toISOString(),
       executedAt: now.toISOString(),
     });
   } catch (error) {
-    console.error("GET /api/cron/cleanup-audit-logs error:", error);
+    console.error(
+      JSON.stringify({
+        event: "cron.audit_logs_cleanup.failed",
+        requestId,
+        retentionDays: AUDIT_LOG_RETENTION_DAYS,
+        cutoff: cutoff.toISOString(),
+        error: error instanceof Error ? error.message : "Unknown error",
+      })
+    );
 
     return NextResponse.json(
       { error: "Failed to clean up audit logs" },
